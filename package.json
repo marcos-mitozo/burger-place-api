@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.131",
+    "prisma": "^5.7.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.1",
+    "aws-lambda": "^1.0.7"
+  }
+}
