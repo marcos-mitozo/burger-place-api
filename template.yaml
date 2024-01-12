@@ -22,6 +22,9 @@ Resources:
       Runtime: nodejs20.x
       Architectures:
       - x86_64
+      Environment:
+        Variables:
+          DATABASE_URL: postgresql://postgres:postgres@172.28.22.66:5432/burgerplace?schema=public
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -36,14 +39,21 @@ Resources:
         Sourcemap: true
         EntryPoints:
         - app.ts
+        Loader:
+          - .so.node=file
+          - .prisma=file
+        AssetNames: '[name]'
   CreateIngredientFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: hello-world/functions/
+      CodeUri: hello-world/
       Handler: ingredient.createIngredient
       Runtime: nodejs20.x
       Architectures:
       - x86_64
+      Environment:
+        Variables:
+          DATABASE_URL: postgresql://postgres:postgres@172.28.22.66:5432/burgerplace?schema=public
       Events:
         CreateIngredient:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -57,8 +67,11 @@ Resources:
         Target: es2020
         Sourcemap: true
         EntryPoints:
-        - ingredient.ts
-
+          - ingredient.ts
+        Loader:
+          - .so.node=file
+          - .prisma=file
+        AssetNames: '[name]'
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
