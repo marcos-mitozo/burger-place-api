@@ -1,11 +1,10 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { PrismaClient } from '@prisma/client';
 
-import IIngredient from "../models/ingredient";
-
-const prisma = new PrismaClient();
+import IIngredient from "./models/ingredient";
 
 export const createIngredient = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    const prisma = new PrismaClient();
     const ingredient: IIngredient = JSON.parse(event.body || '');
 
     try {
@@ -28,5 +27,6 @@ export const createIngredient = async (event: APIGatewayProxyEvent): Promise<API
 }
 
 export const listIngredients = async () => {
+    const prisma = new PrismaClient();
     return await prisma.ingredient.findMany();
 }
