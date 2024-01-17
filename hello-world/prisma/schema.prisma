@@ -25,7 +25,7 @@ model Meal {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name    String @db.VarChar(255)
-  description String?
+  description String
   ingredients IngredientsOnMeals[]
 }
 

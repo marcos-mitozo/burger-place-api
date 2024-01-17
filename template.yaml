@@ -14,11 +14,11 @@ Globals:
     LoggingConfig:
       LogFormat: JSON
 Resources:
-  HelloWorldFunction:
+  ListIngredientsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: hello-world/
-      Handler: app.lambdaHandler
+      Handler: ingredient.listIngredients
       Runtime: nodejs20.x
       Architectures:
       - x86_64
@@ -26,10 +26,10 @@ Resources:
         Variables:
           DATABASE_URL: postgresql://postgres:postgres@172.28.22.66:5432/burgerplace?schema=public
       Events:
-        HelloWorld:
+        CreateIngredient:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /hello
+            Path: /ingredient
             Method: get
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
@@ -38,7 +38,7 @@ Resources:
         Target: es2020
         Sourcemap: true
         EntryPoints:
-        - app.ts
+          - ingredient.ts
         Loader:
           - .so.node=file
           - .prisma=file
@@ -68,6 +68,64 @@ Resources:
         Sourcemap: true
         EntryPoints:
           - ingredient.ts
+        Loader:
+          - .so.node=file
+          - .prisma=file
+        AssetNames: '[name]'
+  CreateMealFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello-world/
+      Handler: meal.createMeal
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      Environment:
+        Variables:
+          DATABASE_URL: postgresql://postgres:postgres@172.28.22.66:5432/burgerplace?schema=public
+      Events:
+        CreateMeal:
+          Type: Api
+          Properties:
+            Path: /meal
+            Method: post
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: true
+        EntryPoints:
+          - meal.ts
+        Loader:
+          - .so.node=file
+          - .prisma=file
+        AssetNames: '[name]'
+  ListMealFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello-world/
+      Handler: meal.listMeals
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      Environment:
+        Variables:
+          DATABASE_URL: postgresql://postgres:postgres@172.28.22.66:5432/burgerplace?schema=public
+      Events:
+        ListMeal:
+          Type: Api
+          Properties:
+            Path: /meal
+            Method: get
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: true
+        EntryPoints:
+          - meal.ts
         Loader:
           - .so.node=file
           - .prisma=file
