@@ -130,6 +130,35 @@ Resources:
           - .so.node=file
           - .prisma=file
         AssetNames: '[name]'
+  PlaceOrderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello-world/
+      Handler: order.placeOrder
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      Environment:
+        Variables:
+          DATABASE_URL: postgresql://postgres:postgres@172.28.22.66:5432/burgerplace?schema=public
+      Events:
+        PlaceOrder:
+          Type: Api
+          Properties:
+            Path: /order
+            Method: post
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: true
+        EntryPoints:
+          - order.ts
+        Loader:
+          - .so.node=file
+          - .prisma=file
+        AssetNames: '[name]'
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
